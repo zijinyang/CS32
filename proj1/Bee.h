@@ -1,4 +1,7 @@
-#include "Room.h"
+#ifndef Bee_Included
+#define Bee_Included
+
+class Room;
 
 class Bee
 {
@@ -20,3 +23,5 @@ class Bee
     int   m_col;
     int   m_health;
 };
+
+#endif //Bee_Included 

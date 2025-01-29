@@ -1,0 +1,288 @@
+Doubly-Linked List Implementation:
+    The Sequence class implements a circular doubly linked list with a dummy node.
+    In Sequence, there is a m_head and m_tail node, each pointing to the dummy node and the last node respectively.
+    Each node has a value, a pointer to the next node, and a pointer to the previous node.
+    The next node of tail is head and the previous node of head is tail, making it circular.
+    The first, head node, is a dummy node, with no value so the list starts at the next node of the head node.
+
+PseudoCode:
+
+Sequence(other): // copy constructor
+    size is other's size
+
+    looping through other:
+        add copy of other's node into end of (this)
+        set previous of new node and next of previous node
+
+    set tail as final node
+    connect tail and head (ie. tail.next = head, head.prev = tail)
+
+
+~Sequence():  // Destructor
+    If list is empty:
+        delete dummy node and exit
+
+    If list has one real node:
+        delete dummy node (head) and tail and exit:
+
+    Starting at the first real node
+
+    Traverse until last node:
+        Delete previous node (starting with dummy)
+        Move to next node
+
+    Delete last node
+
+insert(value):
+    looping through the list:
+        stop when end of list or value is >
+    insert value at a stopped point (using unchecked insert)
+
+
+erase(pos):
+    loop through list until point at node at pos
+
+    if pointing at tail, move tail 1 before
+
+    connect the next and previous of the current node
+    delete current node
+    subtract 1 from size
+
+
+uncheckedInsert(node*, value):
+    create new node and increment size
+
+    set next and prev of new node
+    connect next and prev of new node to it
+
+    if new node is at end:
+        point tail to new node
+    
+
+subsequence(seq1, seq2):
+    if seq2 is empty or seq2 is larger than seq1, exit
+
+    create indicies i1 and i2
+
+    traverse through seq1:
+        if element in seq1 and seq2 are equal:
+            record index if i2 is at beginning of seq2
+
+            increment i1 and i2
+        
+        if element not equal:
+            reset recorded index
+
+            reset i2
+
+            increment i1
+        
+        if i2 reached the end of seq2
+            return recorded index
+    
+zipper(seq1, seq2, result):
+    init new sequence output
+    set equal to seq1
+
+    traverse through seq2:
+        insert between every element in output (insert at i*2 + 1)
+        if index is greater than size of output, append element to end
+
+    set result to output
+
+TestCases:
+
+void initTests(){ 
+    Sequence s;
+    assert(s.empty()); //test empty
+    ItemType x = 97; 
+    assert(!s.get(68, x)  &&  x == 97); //get failure
+    assert(s.find(42) == -1); 
+    assert(s.insert(42) == 0);
+    assert(s.size() == 1  &&  s.find(42) == 0);
+    assert(s.get(0, x)  &&  x == 42);
+    assert(s.erase(0) && s.empty());
+    assert(s.get(0,x) == false);
+}
+    - tests empty(), get() and failure to get
+    - tests insert and size
+        -inserts at start and for value
+
+void testCopy(){
+    Sequence s;
+    assert(s.insert(42) == 0);
+    assert(s.insert(5) == 0);
+
+    ItemType x; 
+    Sequence s1(s);
+    assert(s1.get(0,x) && x == 5);
+
+    Sequence s3;
+    Sequence s4(s3);
+    assert(s4.empty());
+    assert(s4.get(0,x) == false);
+}
+
+    -tests copy with size 0 on both sides and with nonempty sequences
+
+void testAssignment(){
+    Sequence s;
+    assert(s.insert(42) == 0);
+    assert(s.insert(5) == 0);
+
+    ItemType x;
+    Sequence s2;
+    s2 = s;
+    assert(s2.get(0,x) && x == 5);
+
+    Sequence s3;
+    s = s3;
+    assert(s.empty());
+    assert(s.get(0,x) == false);
+}
+
+    -tests assignment with size 0 on both sides and with nonempty sequences
+
+void testSwap(){
+    Sequence s1;
+    assert(s1.insert(0,5) == 0); // 5
+
+    Sequence s2;
+    s1.swap(s2); //s1:5 s2:empty
+    assert(s1.size() == 0);
+    assert(s2.find(5) == 0);
+    assert(s2.set(0,2) == true); // s1: 2
+    assert(s2.find(2) == 0);
+    ItemType x;
+    assert(s2.get(0,x) == true);
+    assert(x == 2);
+
+    Sequence s3 = s2;
+    assert(s1.insert(1) == 0);
+    assert(s1.insert(2) == 1);
+
+    s1.swap(s3);
+    
+    assert(s1.size() == 1);
+}
+
+    -tests swap function, with empty and nonempty sequences
+
+void testInsert(){
+    Sequence s;
+    s.insert(0,1);
+    s.insert(2);
+    s.insert(6);
+    ItemType x;
+    s.get(0,x);
+    assert(x == 1);
+    assert(s.insert(5) == 2);
+    assert(s.size() == 4);
+}
+
+    - tests insert at beginning, end and middle of a sequeence
+
+void testRemove(){
+    Sequence s;
+    s.insert(1);
+    s.insert(1);
+    s.insert(2);
+    s.insert(2);
+    s.insert(2);
+    s.insert(6);
+
+    assert(s.remove(2) == 3);
+    assert(s.remove(6) == 1);
+    assert(s.insert(1,5) == 1);
+    assert(s.remove(1) == 2);
+    assert(s.remove(5));
+    assert(s.remove(25) == 0);
+    assert(s.empty());
+}
+    -tests remove of sequencial and nonsequencial elements
+
+void testSubsequence1()
+{
+    Sequence s1;
+    Sequence s2;
+
+    int arr[] {1,3,5,7,9};
+    for(int i = 0; i < 5; i++){
+        s1.insert(arr[i]);
+    }
+
+    for(int i = 1; i < 4; i++){
+        s2.insert(arr[i]);
+    }
+    assert(subsequence(s1,s2) == 1);
+    
+    Sequence s3;
+    assert(subsequence(s1,s3) == -1);
+
+}
+
+    -base subsequence test
+
+void testSubsequence2()
+{
+    Sequence s1;
+    Sequence s2;
+    int arr[] {1,3,1,3};
+    for(int i = 0; i < 4; i++){
+        s1.insert(i,arr[i]);
+    }
+    for(int i = 0; i < 2; i++){
+        s2.insert(i,arr[i]);
+    }
+    assert(subsequence(s1, s2) == 0);    
+    s2.remove(1);
+    assert(subsequence(s1, s2) == 1);
+}
+
+    -test subsequence with multiple instances
+
+void testZipper(){
+    Sequence s1;
+    Sequence s2;
+    int arr[] {1,3,5,7,9};
+    for(int i = 0; i < 5; i++){
+        s1.insert(arr[i]);
+    }
+
+    for(int i = 1; i < 4; i++){
+        s2.insert(arr[i]);
+    }
+
+    Sequence s3;
+
+    zipper(s1,s2,s3);
+    s3.dump();
+
+    // zipper(s1,s2,s1);
+    // s1.dump();
+    
+    Sequence s4;
+    zipper(s1,s4,s3);
+    s3.dump();
+}
+
+    - base zipper test and tests aliasing
+
+void testZipper2(){
+    Sequence s1;
+    Sequence s2;
+    int arr[] {1,3,5,7,9};
+    for(int i = 0; i < 5; i++){
+        s1.insert(arr[i]);
+    }
+
+    for(int i = 1; i < 4; i++){
+        s2.insert(arr[i]);
+    }
+
+    Sequence result;
+    zipper(s2,s1,result);
+    result.dump();
+}
+
+    -second zipper test

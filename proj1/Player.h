@@ -1,4 +1,7 @@
-#include "Room.h"
+#ifndef Player_Included 
+#define Player_Included 
+
+class Room;
 
 class Player
 {
@@ -24,3 +27,5 @@ class Player
     int   m_age;
     bool  m_dead;
 };
+
+#endif //Player_Included 

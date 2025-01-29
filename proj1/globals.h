@@ -1,3 +1,6 @@
+#ifndef globals_Included
+#define globals_Included
+
 const int MAXROWS = 20;             // max number of rows in the room
 const int MAXCOLS = 25;             // max number of columns in the room
 const int MAXBEES = 150;            // max number of bees allowed
@@ -8,3 +11,8 @@ const int DOWN    = 1;
 const int LEFT    = 2;
 const int RIGHT   = 3;
 const int NUMDIRS = 4;
+
+int randInt(int min, int max);
+void clearScreen();
+
+#endif //globals_Included

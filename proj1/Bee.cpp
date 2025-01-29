@@ -1,7 +1,10 @@
 #include "Bee.h"
 #include "Room.h"
 #include "globals.h"
-#include "utilities.h"
+
+
+#include <iostream>
+using namespace std;
 
 Bee::Bee(Room* rp, int r, int c)
 {

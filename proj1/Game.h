@@ -1,4 +1,7 @@
-#include "Room.h"
+#ifndef Game_Included
+#define Game_Included
+
+class Room;
 
 class Game
 {
@@ -13,3 +16,5 @@ class Game
   private:
     Room* m_room;
 };
+
+#endif //Game_Included
