@@ -252,34 +252,115 @@ int evaluate(string infix, const bool values[], string &postfix, bool &result)
    return 0;
 }
 
-int main()
-{
+int main() {
    bool ba[10] = {
-       //  0      1      2      3      4      5      6      7      8      9
-       true, true, true, false, false, false, true, false, true, false};
+       // 0      1      2      3      4      5      6      7      8      9
+       true,  true,  true,  false, false, false, true,  false, true,  false
+   };
    string pf;
    bool answer;
-   assert(evaluate("2| 3", ba, pf, answer) == 0 && pf == "23|" && answer);
-   assert(evaluate("", ba, pf, answer) == 1);
-   assert(evaluate("8|", ba, pf, answer) == 1);
-   assert(evaluate(" &6", ba, pf, answer) == 1);
-   assert(evaluate("4 5", ba, pf, answer) == 1);
-   assert(evaluate("01", ba, pf, answer) == 1);
-   assert(evaluate("()", ba, pf, answer) == 1);
-   assert(evaluate("()4", ba, pf, answer) == 1);
 
-   assert(evaluate("2(9|8)", ba, pf, answer) == 1);
-   assert(evaluate("2(&8)", ba, pf, answer) == 1);
-   assert(evaluate("(6&(7|7)", ba, pf, answer) == 1);
-   assert(evaluate("x+5", ba, pf, answer) == 1);
-   assert(evaluate("2|3|4", ba, pf, answer) == 0 && pf == "23|4|" && answer);
-   assert(evaluate("2|(3|4)", ba, pf, answer) == 0 && pf == "234||" && answer);
-   assert(evaluate("4  |  !3 & (0&3) ", ba, pf, answer) == 0 && pf == "43!03&&|" && !answer);
-   assert(evaluate(" 9  ", ba, pf, answer) == 0 && pf == "9" && !answer);
-   assert(evaluate("((6))", ba, pf, answer) == 0 && pf == "6" && answer);
-   ba[2] = false;
-   ba[9] = true;
-   assert(evaluate("((9))", ba, pf, answer) == 0 && pf == "9" && answer);
-   assert(evaluate("2| 3", ba, pf, answer) == 0 && pf == "23|" && !answer);
-   cout << "Passed all tests" << endl;
+   // Basic tests
+   assert(evaluate("2|3", ba, pf, answer) == 0 && pf == "23|" && answer);
+   assert(evaluate("2&3", ba, pf, answer) == 0 && pf == "23&" && !answer);
+   assert(evaluate("!2", ba, pf, answer) == 0 && pf == "2!" && !answer);
+   assert(evaluate("(!2)&3", ba, pf, answer) == 0 && pf == "2!3&" && !answer);
+   assert(evaluate("(!2)|3", ba, pf, answer) == 0 && pf == "2!3|" && !answer);
+
+   // Basic operands
+   assert(evaluate("0", ba, pf, answer) == 0 && pf == "0" && answer);
+   assert(evaluate("9", ba, pf, answer) == 0 && pf == "9" && !answer);
+   assert(evaluate("5", ba, pf, answer) == 0 && pf == "5" && !answer);
+
+   // NOT operations
+   assert(evaluate("!0", ba, pf, answer) == 0 && pf == "0!" && !answer);
+   assert(evaluate("!3", ba, pf, answer) == 0 && pf == "3!" && answer);
+   assert(evaluate("!5", ba, pf, answer) == 0 && pf == "5!" && answer);
+
+   // AND operations
+   assert(evaluate("0&1", ba, pf, answer) == 0 && pf == "01&" && answer);
+   assert(evaluate("1&3", ba, pf, answer) == 0 && pf == "13&" && !answer);
+   assert(evaluate("3&4", ba, pf, answer) == 0 && pf == "34&" && !answer);
+   assert(evaluate("2&6", ba, pf, answer) == 0 && pf == "26&" && answer);
+
+   // OR operations
+   assert(evaluate("3|4", ba, pf, answer) == 0 && pf == "34|" && !answer);
+   assert(evaluate("2|3", ba, pf, answer) == 0 && pf == "23|" && answer);
+   assert(evaluate("0|9", ba, pf, answer) == 0 && pf == "09|" && answer);
+
+   // Operator precedence
+   assert(evaluate("2|3&4", ba, pf, answer) == 0 && pf == "234&|" && answer);
+   assert(evaluate("3&4|2", ba, pf, answer) == 0 && pf == "34&2|" && answer);
+
+   // Parentheses
+   assert(evaluate("(2|3)&4", ba, pf, answer) == 0 && pf == "23|4&" && !answer);
+   assert(evaluate("2&(3|4)", ba, pf, answer) == 0 && pf == "234|&" && !answer);
+   assert(evaluate("!(2|3)", ba, pf, answer) == 0 && pf == "23|!" && !answer);
+   assert(evaluate("!2|!3", ba, pf, answer) == 0 && pf == "2!3!|" && answer);
+
+   // Complex expressions
+   assert(evaluate("((!2)&(3|4))|5", ba, pf, answer) == 0 && pf == "2!34|&5|" && !answer);
+   assert(evaluate("0|(1&(2|(3&4)))", ba, pf, answer) == 0 && pf == "01234&|&|" && answer);
+   assert(evaluate("((0)&1)|(2&(3|4))", ba, pf, answer) == 0 && pf == "01&234|&|" && answer);
+
+   // Multiple operators and nesting
+   assert(evaluate("6&7|8&9", ba, pf, answer) == 0 && pf == "67&89&|" && !answer);
+   assert(evaluate("6|7&8|9", ba, pf, answer) == 0 && pf == "678&|9|" && answer);
+   assert(evaluate("!0&1|!2", ba, pf, answer) == 0 && pf == "0!1&2!|" && !answer);
+   assert(evaluate("!3&(4|5)&6", ba, pf, answer) == 0 && pf == "3!45|&6&" && !answer);
+
+   // Edge cases with parentheses
+   assert(evaluate("((2))", ba, pf, answer) == 0 && pf == "2" && answer);
+   assert(evaluate("(((3))&4)", ba, pf, answer) == 0 && pf == "34&" && !answer);
+
+   // Invalid syntax tests
+   assert(evaluate("", ba, pf, answer) == 1);
+   assert(evaluate("&", ba, pf, answer) == 1);
+   assert(evaluate("|", ba, pf, answer) == 1);
+   assert(evaluate("!", ba, pf, answer) == 1);
+   assert(evaluate("(", ba, pf, answer) == 1);
+   assert(evaluate(")", ba, pf, answer) == 1);
+   assert(evaluate("2&", ba, pf, answer) == 1);
+   assert(evaluate("|3", ba, pf, answer) == 1);
+   assert(evaluate("2a3", ba, pf, answer) == 1);
+   assert(evaluate("(2&3", ba, pf, answer) == 1);
+   assert(evaluate("2&3)", ba, pf, answer) == 1);
+   assert(evaluate(")2&3(", ba, pf, answer) == 1);
+   assert(evaluate("2||3", ba, pf, answer) == 1);
+   assert(evaluate("22", ba, pf, answer) == 1);
+   assert(evaluate("3 4", ba, pf, answer) == 1);
+   assert(evaluate("10", ba, pf, answer) == 1);
+   assert(evaluate("2!3", ba, pf, answer) == 1);
+   assert(evaluate("()", ba, pf, answer) == 1);
+   assert(evaluate("(&3)", ba, pf, answer) == 1);
+   assert(evaluate("2&3))", ba, pf, answer) == 1);
+   assert(evaluate("((2&3)", ba, pf, answer) == 1);
+   assert(evaluate("2!&3", ba, pf, answer) == 1);
+   assert(evaluate("2&+3", ba, pf, answer) == 1);
+   assert(evaluate("0&&1", ba, pf, answer) == 1);
+   assert(evaluate("0||1", ba, pf, answer) == 1);
+   assert(evaluate("0!1", ba, pf, answer) == 1);
+   assert(evaluate("(&0)", ba, pf, answer) == 1);
+   assert(evaluate("0|(1&)", ba, pf, answer) == 1);
+   assert(evaluate("7|(8&9", ba, pf, answer) == 1);
+   assert(evaluate("5|6&", ba, pf, answer) == 1);
+   assert(evaluate("5&6|", ba, pf, answer) == 1);
+   assert(evaluate("!7|!8", ba, pf, answer) == 0 && pf == "7!8!|" && answer);
+   assert(evaluate("!7&!8", ba, pf, answer) == 0 && pf == "7!8!&" && !answer);
+   assert(evaluate("!(7&8)", ba, pf, answer) == 0 && pf == "78&!" && answer);
+   assert(evaluate("6&7|!8&9", ba, pf, answer) == 0 && pf == "67&8!9&|" && !answer);
+   assert(evaluate("5|6&7", ba, pf, answer) == 0 && pf == "567&|" && !answer);
+   assert(evaluate("5&6|7", ba, pf, answer) == 0 && pf == "56&7|" && !answer);
+   assert(evaluate("1&2|3&4", ba, pf, answer) == 0 && pf == "12&34&|" && answer);
+   assert(evaluate("1&(2|3)&4", ba, pf, answer) == 0 && pf == "123|&4&" && !answer);
+   assert(evaluate("!1&!2", ba, pf, answer) == 0 && pf == "1!2!&" && !answer);
+   assert(evaluate("!(1|2)&3", ba, pf, answer) == 0 && pf == "12|!3&" && !answer);
+   assert(evaluate("((0))", ba, pf, answer) == 0 && pf == "0" && answer);
+   assert(evaluate("0&((1)|2)", ba, pf, answer) == 0 && pf == "012|&" && answer);
+   assert(evaluate("!(3|4)&5", ba, pf, answer) == 0 && pf == "34|!5&" && !answer);
+   assert(evaluate("0|1&2|3", ba, pf, answer) == 0 && pf == "012&|3|" && answer);
+   assert(evaluate("9|!9", ba, pf, answer) == 0 && pf == "99!|" && answer);
+
+   cout << "All tests passed." << endl;
+   return 0;
 }

@@ -11,7 +11,6 @@ Queue Coords:
 8, 5
 2, 4
 4, 6
-8, 6
 
 Stack Coords:
 6, 4
@@ -26,7 +25,6 @@ Stack Coords:
 6, 6
 5, 4
 4, 4
-4, 5
 
 How do the two algorithms differ from each other?
 
