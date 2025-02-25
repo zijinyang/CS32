@@ -261,7 +261,7 @@ void GameController::doSomething()
 			break;
 		case welcome:
 			playSound(SOUND_THEME);
-			m_mainMessage = "Welcome to Marble Madness!";
+			m_mainMessage = "Welcome to Wonky Kong!";
 			m_secondMessage = "Press Enter to begin play...";
 			setGameState(prompt);
 			m_nextStateAfterPrompt = init;
