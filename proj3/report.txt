@@ -1,0 +1,18 @@
+Control Flow between Player and Goodie:
+    All interactions take place in the move() method of StudentWorld
+
+    When the doSomething() of all actors are called in move(), the interaction occurs, specifically in the doSoemthing() of the Goodie class
+
+    As all Goodies are derived from the Goodie class, they all have the same doSomething() method, defined in the Base Goodie class
+    The method works as follows:
+        - if the player is in the same square as the Goodie
+            - this is accomplished with a supporting method in the StudentWorld class, which gets the location of the player and checks if it matches the given coordinates
+        - the score is increased by some amount (depending on the type of Goodie)
+        - the Goodie is set to dead
+        - the GameWorld plays the goodie sound
+        - the Goodie's effect is called, which is a virtual method that is overridden by each derived Goodie class
+            - each effect is accomplished by calling a method in the StudentWorld class, which modifies the player's state accordingly
+
+All functionality mentioned in the spec has been implemented
+
+There were no notable design decisions that needed to be made, it was clear either through the sample code or the spec what needed to be done

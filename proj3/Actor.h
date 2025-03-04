@@ -49,6 +49,7 @@ class Player : public Actor
         void incrBurps(int amt){m_numBurps += amt;};
         int numBurps(){return m_numBurps;};
 
+        //supporting methods for kong running away
         void setWon(){m_hasWon = true;};
         bool hasWon(){return m_hasWon;};
     private:
@@ -132,8 +133,8 @@ class Enemy: public Actor
         virtual void isAttacked();
         virtual void dropGoodie(){};
 
-        bool canDoSomething(); 
-        void walk();
+        bool canDoSomething(); //checks if the enemy can do something
+        void walk(); //attempt to walk in direction, if cannot, then switchd direction
         void switchDirection();
         
         void set_doSomethingThreshold(int threshold){doSomethingThreshold = threshold;};
@@ -177,7 +178,7 @@ class Kong: public Enemy
     public:
         Kong(int x, int y, int direction, StudentWorld* gw) : Enemy(IID_KONG, x, y, direction, gw){set_doSomethingThreshold(5);};
         virtual void doSomething();
-        bool canThrowBarrel();
+        bool canThrowBarrel(); //checks if Kong can throw a barrel
     private:
         bool m_flee = false;
         int m_barrel_counter = 0;

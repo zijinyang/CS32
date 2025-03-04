@@ -1,0 +1,7 @@
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/rebuild_cache.dir
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/edit_cache.dir
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/oddvector.dir
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/Sequence.dir
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/oddlist.dir
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/badvector.dir
+/Users/kevinyang/Documents/CS32/hw4/build/CMakeFiles/badlist.dir

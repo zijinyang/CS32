@@ -99,13 +99,15 @@ void Player::doSomething()
       switch (ch)
       {
       case KEY_PRESS_LEFT:
-         setDirection(GraphObject::left);
-         if (canMoveTo(getDirection()))
+         if(getDirection() != GraphObject::left)
+            setDirection(GraphObject::left);
+         else if(canMoveTo(getDirection()))
             moveTo(getDirection());
          break;
       case KEY_PRESS_RIGHT:
-         setDirection(GraphObject::right);
-         if (canMoveTo(getDirection()))
+         if(getDirection() != GraphObject::right)
+            setDirection(GraphObject::right);
+         else if(canMoveTo(getDirection()))
             moveTo(getDirection());
          break;
       case KEY_PRESS_UP:
@@ -178,7 +180,6 @@ void Burp::doSomething()
 
 void Bonfire::doSomething()
 {
-   getGameWorld()->burnAllAt(getX(), getY());
    getGameWorld()->attackPlayer(getX(), getY());
 }
 
@@ -339,6 +340,11 @@ void Barrel::doSomething()
    {
       getGameWorld()->attackPlayer(getX(), getY());
       return;
+   }
+   
+   if(getGameWorld()->getLev()->getContentsOf(getX(), getY()) == Level::bonfire){
+      setDead();
+      return; 
    }
    
    if(getTileAt(down) != Level::floor){

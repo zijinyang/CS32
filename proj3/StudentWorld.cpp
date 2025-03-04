@@ -4,6 +4,7 @@
 #include "GameConstants.h"
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -13,12 +14,12 @@ GameWorld *createStudentWorld(string assetPath)
 }
 
 // Students:  Add code to this file, StudentWorld.h, Actor.h, and Actor.cpp
-
 StudentWorld::StudentWorld(string assetPath)
     : GameWorld(assetPath), lev(assetPath)
 {
 }
 
+//attacks all actors at a given location
 void StudentWorld::attackAllAt(int x, int y)
 {
     vector<Actor*>::iterator i;
@@ -30,6 +31,8 @@ void StudentWorld::attackAllAt(int x, int y)
     }
 }
 
+//attacks actors that can be burnt at a given location
+//No longer used
 void StudentWorld::burnAllAt(int x, int y)
 {
     vector<Actor*>::iterator i;
@@ -41,6 +44,7 @@ void StudentWorld::burnAllAt(int x, int y)
     }
 }
 
+//attacks all enemies at a given location
 void StudentWorld::attackAllEnemiesAt(int x, int y)
 {
     vector<Actor*>::iterator i;
@@ -52,12 +56,14 @@ void StudentWorld::attackAllEnemiesAt(int x, int y)
     }
 }
 
+//attacks the player
 void StudentWorld::attackPlayer(int x, int y)
 {
     if(m_player->isAt(x,y))
         m_player->isAttacked();
 } 
 
+//checks if the player is at a given location
 bool StudentWorld::playerIsAt(int x, int y)
 {
     return (m_player->isAt(x,y));
@@ -131,6 +137,7 @@ int StudentWorld::init()
 
 int StudentWorld::move()
 {
+    //calling doSomething for all actors
     m_player->doSomething();
     vector<Actor*>::iterator i;
     for(i = m_actorList.begin(); i != m_actorList.end(); i++)
@@ -146,6 +153,7 @@ int StudentWorld::move()
             return GWSTATUS_FINISHED_LEVEL;
     }
     
+    //removing dead actors
     for(i = m_actorList.begin(); i != m_actorList.end();)
     {
         if(!(*i)->isAlive()){
@@ -156,6 +164,7 @@ int StudentWorld::move()
         }
     }
 
+    //updating game status text
     ostringstream oss;
     oss << "Score: " << setw(7) << setfill('0') << getScore() << "  Level: " << setw(2) << getLevel() << "  Lives: " << setw(2) << getLives() << "  Burps: " << setw(2) << numBurps();
     setGameStatText(oss.str());
@@ -165,12 +174,15 @@ int StudentWorld::move()
 
 void StudentWorld::cleanUp()
 {
+    //deleting all actors
     vector<Actor*>::iterator i;
     for(i = m_actorList.begin(); i != m_actorList.end();)
     {
         delete (*i);
         i = m_actorList.erase(i);
     }
+
+    //deleting player, ensuring that is cleanup is called twice the player is not deleted twice
     if(m_player != nullptr){
         delete m_player;
         m_player = nullptr;

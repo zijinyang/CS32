@@ -1,0 +1,4 @@
+1e.
+    For the third test, in the loop, when k = 2, vector.push_back is called. As the capacity of the vector is already full, the push_back call will reallocate memory and copy the existing elements to the new memory location. 
+    This will invalidate the iterator it, leading to undefiled behavior when the iterator is followed for the next iteration.
+

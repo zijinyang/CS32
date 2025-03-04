@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/kevinyang/Documents/CS32/temp/build",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -o CMakeFiles/temp.dir/bs.cpp.o -c /Users/kevinyang/Documents/CS32/temp/bs.cpp",
+  "file": "/Users/kevinyang/Documents/CS32/temp/bs.cpp"
+}
+]

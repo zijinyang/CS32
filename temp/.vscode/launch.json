@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/temp",
+            "args": [],
+            "cwd": "${fileDirname}",
+            "MIMode": "lldb"
+        }
+    ]
+}

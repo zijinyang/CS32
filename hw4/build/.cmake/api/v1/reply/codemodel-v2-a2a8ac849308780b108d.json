@@ -1,0 +1,95 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "MultiExecutableProject",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Sequence::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Sequence-Debug-07351254d6534ef46367.json",
+					"name" : "Sequence",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "badlist::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-badlist-Debug-73f843252edc5a6dae2a.json",
+					"name" : "badlist",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "badvector::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-badvector-Debug-873be243e92b9c9f7997.json",
+					"name" : "badvector",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "oddlist::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-oddlist-Debug-11acfc207b4feada1d4a.json",
+					"name" : "oddlist",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "oddvector::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-oddvector-Debug-f4244d557279b1ae229f.json",
+					"name" : "oddvector",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/kevinyang/Documents/CS32/hw4/build",
+		"source" : "/Users/kevinyang/Documents/CS32/hw4"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}
