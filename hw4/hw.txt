@@ -2,3 +2,29 @@
     For the third test, in the loop, when k = 2, vector.push_back is called. As the capacity of the vector is already full, the push_back call will reallocate memory and copy the existing elements to the new memory location. 
     This will invalidate the iterator it, leading to undefiled behavior when the iterator is followed for the next iteration.
 
+3. 
+    The second call to sequence.insert causes a compiler error as sc.insert(Coord(40,10)) calls the overloaded insert method 
+    which attempts to insert the item at the first item that the argument compares as less than.
+    The Coord class does not have a less than operator defined, so the compiler does not know how to compare the Coord objects.
+    Thus, it is undefined behavior to compare two Coord objects, and there is a compiler error on the second insert call.
+
+4b.
+    With only a one parameter listAll, each call of listAll in the subclasses would not have a way to access the parent class's information.
+    While the parent's hierarchy can be printed once, each subclass cannot access and concatenate the parent's information to its own.
+
+5.
+    a. 
+        The time complexity is O(N^3) because the outer loop runs N times, the middle loop runs N times, and the inner loop runs N times.
+        Everything inside each loop is O(1), so the total time complexity is O(N^3).
+    b. 
+        The time complexity is O(0.5N^3), which still falls under O(N^3) but is better than in (a).
+        The only improvement is in the second loop that gets the second city. As it only loops to i, it eliminates repeat calculations.
+
+6.
+    a. 
+        The time complexity is O(N^2). Together, both of the loops run a total of N times, with N being the number of nodes in the larger
+        sequence. Sequence::get runs in O(N) time, as it has to visit each node in the sequence until the position is reached. Thus, as there are 
+        Sequence::get statements in both loops, the time complexity is O(N^2).
+    b.
+        The time complexity is O(N), as both loops combined iterate at most the number of times equal to the size of the longest sequence.
+        Every action in each loop is O(1), so the total time complexity is O(N).
