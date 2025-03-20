@@ -64,6 +64,19 @@
         "utility": "cpp",
         "vector": "cpp",
         "array": "cpp",
-        "complex": "cpp"
-    }
+        "complex": "cpp",
+        "filesystem": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "map": "cpp",
+        "__tree": "cpp",
+        "list": "cpp",
+        "queue": "cpp"
+    },
+    "cmake.ignoreCMakeListsMissing": true,
+    "cmake.debugConfig": {
+        "args": ["params.txt"],
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      },
 }

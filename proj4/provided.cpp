@@ -126,7 +126,6 @@ bool validate_itinerary(
         const FlightSegment& flight = itinerary.flights[i];
 
           // --- 1) Verify the current flight is in the flight manager database
-
           // Look up possible flights in the flight manager
         auto possible_flights = flightManager.find_flights(
             flight.source_airport,

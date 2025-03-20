@@ -1,0 +1,6 @@
+Assuming the FlightManager holds N airports, and each airport is associated with F flights on average
+
+load_flight_data is O(NFlog(F)), as it goes through every flight provided, and for each one, it inserts it into a BST consisting of flights from the same airport, which is log(F)
+
+find_flights is O(F + log(F)) = O(F) as it iterates through all the flights from one airport, which takes linear time. Finding the corresponding BST is constant time as it is stored
+in a hash map, and the initial call of get first not smaller is log(F). 

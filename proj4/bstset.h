@@ -1,4 +1,5 @@
-#include<iostream> //dbg
+#ifndef BSTSet_Included
+#define BSTSet_Included
 
 template <typename T>
 class BSTSet
@@ -31,22 +32,22 @@ class BSTSet
     
                 //default destructor should be ok
                 const T* get_and_advance();
-                T getVal() const {return m_currentNode->value;}
+                Node* recursiveFindFirstGreater(const T& value, Node* current);
         };
 
         BSTSet(): m_root(nullptr){}
         ~BSTSet(){deleteRecursive(m_root);}
 
         void insert(const T& value);
-        SetIterator find(const T& value){return SetIterator(findRecursive(value, m_root));}
-        SetIterator find_first_not_smaller(const T& value);
+        SetIterator find(const T& value) const {return SetIterator(findRecursive(value, m_root));}
+        SetIterator find_first_not_smaller(const T& value) const;
 
     private:
         //helper methods
         void deleteRecursive(Node* root);
-        Node* findRecursive(const T& value, Node* current);
+        Node* findRecursive(const T& value, Node* current) const;
         Node* findLocationToInsert(const T& value, Node* current);//should work, TODO check w/ chat
-        Node* recursiveFindFirstNotSmaller(const T& value, Node* current);
+        Node* recursiveFindFirstNotSmaller(const T& value, Node* current) const;
         
         Node* m_root;
 };
@@ -63,7 +64,7 @@ void BSTSet<T>::deleteRecursive(Node* root)
 }
 
 template <typename T>
-typename BSTSet<T>::Node* BSTSet<T>::findRecursive(const T& value, Node* current)
+typename BSTSet<T>::Node* BSTSet<T>::findRecursive(const T& value, Node* current) const
 {
     if(current->value == value)
         return current;
@@ -88,12 +89,35 @@ void BSTSet<T>::insert(const T& value)
     Node* location = findLocationToInsert(value, m_root);
     if(location == nullptr)
     {
-        throw std::runtime_error("Insert Failed"); //dbg
+        // throw std::runtime_error("Insert Failed"); //dbg
     }
     if(location->value == value)
     {
-        location->getParentReference() = new Node(value, location->parent);
-        delete location;
+        if(location->parent == nullptr)
+        {            
+            Node* newRoot = new Node(value, location->parent);            
+            newRoot->leftptr = location->leftptr;
+            newRoot->rightptr = location->rightptr;
+
+            if (location->leftptr) location->leftptr->parent = newRoot;
+            if (location->rightptr) location->rightptr->parent = newRoot;
+
+            delete location;
+
+            m_root = newRoot;
+        }else
+        {
+            Node* newNode = new Node(value, location->parent);
+            newNode->leftptr = location->leftptr;
+            newNode->rightptr = location->rightptr;
+
+            if (location->leftptr) location->leftptr->parent = newNode;
+            if (location->rightptr) location->rightptr->parent = newNode;
+
+            location->getParentReference() = newNode;
+            delete location;
+        }
+        return;
     }
     if(location->value > value)
         location->leftptr = new Node(value, location);
@@ -124,9 +148,20 @@ typename BSTSet<T>::Node* BSTSet<T>::findLocationToInsert(const T& value, Node* 
 }
 
 template <typename T>
-typename BSTSet<T>::Node* BSTSet<T>::recursiveFindFirstNotSmaller(const T& value, Node* current)
+typename BSTSet<T>::SetIterator BSTSet<T>::find_first_not_smaller(const T& value) const
 {
-    if(current->isLeaf)
+    if(m_root == nullptr) //empty tree, checked again in recursiveFindFirstNotSmaller
+        return SetIterator();
+    Node* location = recursiveFindFirstNotSmaller(value, m_root);
+    return SetIterator(location);
+}
+
+template <typename T>
+typename BSTSet<T>::Node* BSTSet<T>::recursiveFindFirstNotSmaller(const T& value, Node* current) const
+{
+    if(current == nullptr)
+        return nullptr;
+    if(current->value == value)
         return current;
     if(current->value > value)
     {
@@ -142,11 +177,69 @@ typename BSTSet<T>::Node* BSTSet<T>::recursiveFindFirstNotSmaller(const T& value
         }
     }
     
-    if(current < value)
+    if(current->value < value)
     {
         if(current->rightptr == nullptr)
             return nullptr;
         else
             return recursiveFindFirstNotSmaller(value, current->rightptr);
     }
+    
+    return nullptr; 
 }
+
+template <typename T>
+const T* BSTSet<T>::SetIterator::get_and_advance()
+{
+    if (m_currentNode == nullptr)
+        return nullptr;
+
+    Node* temp = m_currentNode;
+    
+    if (m_currentNode->rightptr != nullptr)
+    {
+        m_currentNode = m_currentNode->rightptr;
+        while (m_currentNode->leftptr != nullptr)
+            m_currentNode = m_currentNode->leftptr;
+    }
+    else
+    {
+    while (m_currentNode->parent != nullptr && m_currentNode == m_currentNode->parent->rightptr)
+            m_currentNode = m_currentNode->parent;
+        m_currentNode = m_currentNode->parent;
+    }
+
+    return &temp->value;
+}
+
+template <typename T>
+typename BSTSet<T>::Node* BSTSet<T>::SetIterator::recursiveFindFirstGreater(const T& value, Node* current)
+{
+    if(current == nullptr)
+        return nullptr;
+    if(current->value > value)
+    {
+        if(current->leftptr == nullptr)
+            return current;
+        else
+        {
+            Node* temp = recursiveFindFirstGreater(value, current->leftptr);
+            if(temp == nullptr)
+                return current;
+            else
+                return temp;
+        }
+    }
+    
+    if(current->value < value || current->value == value)
+    {
+        if(current->rightptr == nullptr)
+            return nullptr;
+        else
+            return recursiveFindFirstGreater(value, current->rightptr);
+    }
+    
+    return nullptr; 
+}
+
+#endif // BSTSet_Included
