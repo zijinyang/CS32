@@ -407,4 +407,5 @@ CMakeUserPresets.json
 out/
 build/*
 !build/build.xml
+.DS_Store
 
