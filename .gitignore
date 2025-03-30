@@ -411,10 +411,12 @@ build/*
 !build/build.xml
 .DS_Store
 *.dSYM
+*Cmake*
 
 #unique for current repo
 temp/*
 WonkyKongSample/*
 *Submission.zip
+**/*Submission.zip
 
 
