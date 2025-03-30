@@ -415,5 +415,6 @@ build/*
 #unique for current repo
 temp/*
 WonkyKongSample/*
+*Submission.zip
 
 
