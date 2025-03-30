@@ -392,6 +392,7 @@ FodyWeavers.xsd
 
 #Cmake
 CMakeLists.txt.user
+**/CMake*/
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -405,7 +406,14 @@ _deps
 CMakeUserPresets.json
 .vs/
 out/
+**/build/
 build/*
 !build/build.xml
 .DS_Store
+*.dSYM
+
+#unique for current repo
+temp/*
+WonkyKongSample/*
+
 
